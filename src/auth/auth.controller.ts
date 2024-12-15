@@ -1,5 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Response } from 'express';
 
 @Controller('api/auth')
 export class AuthController {
@@ -7,13 +8,23 @@ export class AuthController {
 
   @Post('register')
   async register(
+    // HttpStatus로 Resposne 반환
+    // https://docs.nestjs.com/controllers
+    @Res() res: Response,
     @Body() body: { email: string; password: string; role: 'buyer' | 'seller' },
   ) {
-    return this.authService.register(body);
+    const data = await this.authService.register(body);
+    if (data.result) res.status(HttpStatus.CREATED).send();
+    else res.status(HttpStatus.CONFLICT).json(data);
   }
 
   @Post('login')
-  async login(@Body() body: { email: string; password: string }) {
-    return this.authService.login(body);
+  async login(
+    @Res() res: Response,
+    @Body() body: { email: string; password: string },
+  ) {
+    const data = await this.authService.login(body);
+    if (!data) res.status(HttpStatus.UNAUTHORIZED).send();
+    else res.status(HttpStatus.ACCEPTED).json(data);
   }
 }
