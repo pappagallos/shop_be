@@ -14,7 +14,7 @@ export class AuthController {
     @Body() body: { email: string; password: string; role: 'buyer' | 'seller' },
   ) {
     const data = await this.authService.register(body);
-    if (data.result) res.status(HttpStatus.CREATED).send();
+    if (data.result) res.status(HttpStatus.CREATED).json(data);
     else res.status(HttpStatus.CONFLICT).json(data);
   }
 
@@ -24,7 +24,7 @@ export class AuthController {
     @Body() body: { email: string; password: string },
   ) {
     const data = await this.authService.login(body);
-    if (!data) res.status(HttpStatus.UNAUTHORIZED).send();
+    if (!data) res.status(HttpStatus.UNAUTHORIZED).json(data);
     else res.status(HttpStatus.ACCEPTED).json(data);
   }
 }
