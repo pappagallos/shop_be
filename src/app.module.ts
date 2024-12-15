@@ -8,7 +8,7 @@ import { PurchaseModule } from './purchase/purchase.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }), // 전체 Module에서 환경변수를 사용할 수 있도록 isGlobal: true 처리
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,
     ProductsModule,
