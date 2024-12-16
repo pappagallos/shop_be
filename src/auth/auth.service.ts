@@ -41,7 +41,7 @@ export class AuthService {
     // [2] 비밀번호 검사
     const isValidPassword = await bcrypt.compare(password, user.password);
 
-    // [3-1] 사용자가 존재하지 않거나 비밀번호가 틀릴 경우,
+    // [3-1] 사용자가 존재하지 않거나 비밀번호가 틀릴 경우
     if (!user || !isValidPassword)
       return {
         result: false,
@@ -49,9 +49,12 @@ export class AuthService {
       };
 
     // [3-2] 사용자가 존재하고 비밀번호가 일치할 경우
-    const token = jwt.sign({ id: user._id, role: user.role }, 'secret');
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+    );
 
     // [4] Token 반환
-    return { result: true, token };
+    return { result: true, token, role: user.role };
   }
 }
