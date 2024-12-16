@@ -6,7 +6,7 @@ export class Product extends Document {
   @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   description: string;
 
   @Prop({ required: true })
@@ -15,8 +15,8 @@ export class Product extends Document {
   @Prop({ required: true })
   stock: number;
 
-  @Prop()
-  imageUrl: string;
+  @Prop({ required: true })
+  imageUrls: Array<string>;
 
   @Prop({ required: true, type: Types.ObjectId })
   sellerId: Types.ObjectId;
