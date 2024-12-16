@@ -7,8 +7,10 @@ import {
   Post,
   Put,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('api/products')
 export class ProductsController {
@@ -30,6 +32,7 @@ export class ProductsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createProduct(@Body() body, @Req() req) {
     return this.productsService.createProduct(body, req.user.id);
   }
